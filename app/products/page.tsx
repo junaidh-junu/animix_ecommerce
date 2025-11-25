@@ -1,12 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductGrid from '@/components/products/ProductGrid';
 import { Product } from '@/lib/types';
 import Button from '@/components/ui/Button';
 
-export default function ProductsPage() {
+// Loading fallback component
+function ProductsLoading() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">Loading Products...</h1>
+        <p className="text-gray-600">
+          Discover our collection of premium anime merchandise
+        </p>
+      </div>
+      <div className="flex justify-center items-center py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      </div>
+    </div>
+  );
+}
+
+// Component that uses useSearchParams - must be wrapped in Suspense
+function ProductsContent() {
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -92,5 +110,14 @@ export default function ProductsPage() {
         </>
       )}
     </div>
+  );
+}
+
+// Main page component with proper Suspense boundary
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<ProductsLoading />}>
+      <ProductsContent />
+    </Suspense>
   );
 }

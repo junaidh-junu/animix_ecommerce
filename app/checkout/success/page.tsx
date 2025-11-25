@@ -1,13 +1,27 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { CheckCircle } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cartStore';
 
-export default function CheckoutSuccessPage() {
+// Loading fallback component
+function CheckoutSuccessLoading() {
+  return (
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <CheckCircle size={80} className="mx-auto text-green-500 mb-6" />
+      <h1 className="text-4xl font-bold text-gray-800 mb-4">Processing...</h1>
+      <p className="text-xl text-gray-600 mb-8">
+        Please wait while we confirm your order.
+      </p>
+    </div>
+  );
+}
+
+// Component that uses useSearchParams - must be wrapped in Suspense
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('order_id');
   const clearCart = useCartStore((state) => state.clearCart);
@@ -39,5 +53,14 @@ export default function CheckoutSuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+// Main page component with proper Suspense boundary
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={<CheckoutSuccessLoading />}>
+      <CheckoutSuccessContent />
+    </Suspense>
   );
 }

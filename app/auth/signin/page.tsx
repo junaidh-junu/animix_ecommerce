@@ -8,6 +8,20 @@ import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 
+// Loading fallback component
+function SignInLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-500">
+      <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800">Loading...</h1>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Component that uses useSearchParams - must be wrapped in Suspense
 function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -86,17 +100,10 @@ function SignInForm() {
   );
 }
 
+// Main page component with proper Suspense boundary
 export default function SignInPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-500">
-        <div className="max-w-md w-full bg-white rounded-xl shadow-2xl p-8">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800">Loading...</h1>
-          </div>
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<SignInLoading />}>
       <SignInForm />
     </Suspense>
   );
