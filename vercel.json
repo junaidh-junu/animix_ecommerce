@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "NEXTAUTH_SECRET": "@nextauth_secret",
+    "NEXTAUTH_URL": "@nextauth_url",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
+    "STRIPE_SECRET_KEY": "@stripe_secret_key",
+    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
+    "ADMIN_EMAIL": "@admin_email"
+  }
+}
